@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class DoadorDTO {
 
-    private BigInteger id;
+    private Long id;
     private String nome;
     private String cpf;
     private LocalDate datanascimento;
@@ -28,5 +28,5 @@ public class DoadorDTO {
     private String estado;
     private String telefoneFixo;
     private String celular;
-    private BigInteger tipoSanguineo;
+    private Long tipoSanguineo;
 }

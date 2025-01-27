@@ -16,7 +16,7 @@ public class Doador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private BigInteger id;
+    private Long id;
     @Column(name = "nome", nullable = false, length = 255)
     private String nome;
     @Column(name = "cpf", nullable = false, length = 255)
@@ -47,6 +47,6 @@ public class Doador {
     @Column(name = "celular", nullable = true, length = 255)
     private String celular;
     @Column(name = "tiposanguineo", nullable = true, length = 255)
-    private BigInteger tipoSanguineo;
+    private Long tipoSanguineo;
 }
 

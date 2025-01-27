@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 
 @Repository
-public interface DoadorRepository extends JpaRepository<Doador, BigInteger> {
+public interface DoadorRepository extends JpaRepository<Doador, Long> {
 }

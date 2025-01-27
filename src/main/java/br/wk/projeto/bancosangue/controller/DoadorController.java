@@ -5,6 +5,7 @@ import br.wk.projeto.bancosangue.dto.DoadorDTO;
 import br.wk.projeto.bancosangue.service.DoadorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -21,4 +22,8 @@ public class DoadorController {
 
     @GetMapping
     List<DoadorDTO> findAll() { return doadorService.findAll(); }
+
+
+    @PostMapping
+    DoadorDTO salvar(DoadorDTO doadorDTO) { return doadorService.salvar(doadorDTO); }
 }

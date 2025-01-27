@@ -18,6 +18,10 @@ public class TipoSanguineoService {
        return repository.findAll().stream().map(this::toDto).toList();
     }
 
+    public TipoSanguineoDTO save(TipoSanguineoDTO dto) {
+        return toDto(repository.save(toEntity(dto)));
+    }
+
     private TipoSanguineoDTO toDto(TipoSanguineo entity) {
         return TipoSanguineoDTO.builder()
                 .id(entity.getId())

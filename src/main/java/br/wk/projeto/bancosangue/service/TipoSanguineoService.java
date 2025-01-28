@@ -21,6 +21,10 @@ public class TipoSanguineoService {
        return repository.findAll().stream().map(this::toDto).toList();
     }
 
+    public TipoSanguineo findById(Long id){
+        return repository.findById(id).orElse(null);
+    }
+
     public TipoSanguineoDTO findByCodigo(String codigo) {
         final var obj = repository.findByCodigo(codigo);
         if(Objects.isNull(obj)) {

@@ -12,4 +12,6 @@ public interface DoadorRepository extends JpaRepository<Doador, Long> {
 
     @Query(value = "select estado, count(*) from doador group by estado order by estado", nativeQuery = true)
     List<Object[]> doadoresPorEstado();
+
+    Doador findByCpf(String cpf);
 }

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "doador", schema = "banco")
+@Table(name = "doador", schema = "banco", uniqueConstraints={@UniqueConstraint(columnNames={"cpf"})})
 public class Doador {
 
     @Id

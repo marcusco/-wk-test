@@ -2,6 +2,8 @@ package br.wk.projeto.bancosangue.service;
 
 import br.wk.projeto.bancosangue.dto.DoadorDTO;
 import br.wk.projeto.bancosangue.dto.DoadoresPorEstadoDTO;
+import br.wk.projeto.bancosangue.dto.MediaIdadeTipoSanguineoDTO;
+import br.wk.projeto.bancosangue.dto.TipoSanguineoDTO;
 import br.wk.projeto.bancosangue.exception.BaseServiceException;
 import br.wk.projeto.bancosangue.model.Doador;
 import br.wk.projeto.bancosangue.repository.DoadorRepository;
@@ -9,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class DoadorService {
 
     public List<DoadorDTO> findAll() {
         final var tmp = doadorRepository.findAll().stream().map(this::doadorToDto).toList();
-        if(tmp.isEmpty()) {
+        if (tmp.isEmpty()) {
             throw new BaseServiceException(HttpStatus.NOT_FOUND, "Nenhum doador cadastrado");
         }
         return tmp;
@@ -28,7 +31,7 @@ public class DoadorService {
 
     public List<Doador> todos() {
         final var tmp = doadorRepository.findAll();
-        if(tmp.isEmpty()) {
+        if (tmp.isEmpty()) {
             throw new BaseServiceException(HttpStatus.NOT_FOUND, "Nenhum doador cadastrado");
         }
         return tmp;
@@ -37,12 +40,16 @@ public class DoadorService {
     public DoadorDTO salvar(DoadorDTO doadorDTO) {
         validate(doadorDTO);
         final var doador = dtoToDoador(doadorDTO);
+        final var doadprTmp = doadorRepository.findByCpf(doador.getCpf());
+        if(!Objects.isNull(doadprTmp)){
+            doador.setId(doadprTmp.getId());
+        }
         final var tmp = doadorRepository.save(doador);
         return doadorToDto(tmp);
     }
 
-    private Long findTipoSanguineoByCodigo(String codigo) {
-        return tipoSanguineoService.findByCodigo(codigo).getId();
+    private TipoSanguineoDTO findTipoSanguineoByCodigo(String codigo) {
+        return tipoSanguineoService.findByCodigo(codigo);
 
     }
 
@@ -107,8 +114,8 @@ public class DoadorService {
         tmp.setEstado(doadorDTO.getEstado());
         tmp.setTelefoneFixo(doadorDTO.getTelefoneFixo());
         tmp.setCelular(doadorDTO.getCelular());
-        final  var idTipoSanguineo = findTipoSanguineoByCodigo(doadorDTO.getTipoSanguineo());
-        tmp.setIdTipoSanguineo(idTipoSanguineo);
+        final var tipoSanguineo = findTipoSanguineoByCodigo(doadorDTO.getTipoSanguineo());
+        tmp.setIdTipoSanguineo(tipoSanguineo.getId());
         tmp.setAltura(doadorDTO.getAltura());
         tmp.setPeso(doadorDTO.getPeso());
         return tmp;
@@ -127,8 +134,39 @@ public class DoadorService {
     }
 
 
+    public List<MediaIdadeTipoSanguineoDTO> calcularMediaIdadePorGrupoSanguineo() {
+        Map<String, Integer> somaIdades = new HashMap<>();
+        Map<String, Integer> contador = new HashMap<>();
+        final var listMediaIdade = new ArrayList<MediaIdadeTipoSanguineoDTO>();
+        final var doadores = todos();
 
+        // Calcula a soma das idades e o total de pessoas para cada tipo sanguíneo
+        for (Doador doador : doadores) {
+            final var tipo = tipoSanguineoService.findById(doador.getIdTipoSanguineo());
+            ;
+            final var idade = LocalDate.now().getYear() - doador.getDataNascimento().getYear();
+            somaIdades.put(tipo.getCodigo(), somaIdades.getOrDefault(tipo.getCodigo(), 0) + idade);
+            contador.put(tipo.getCodigo(), contador.getOrDefault(tipo.getCodigo(), 0) + 1);
+        }
 
+        int totalIdade = 0;
+        int totalDoares = 0;
+        double mediaIdade = 0.0;
+
+        // Calcula e exibe a média de idade para cada tipo sanguíneo
+        for (String tipo : somaIdades.keySet()) {
+            totalIdade = somaIdades.get(tipo);
+            totalDoares = contador.get(tipo);
+            mediaIdade = totalDoares > 0 ? (double) totalIdade / totalDoares : 0.0;
+            listMediaIdade.add(MediaIdadeTipoSanguineoDTO
+                    .builder()
+                    .tipoSanguineo(tipo)
+                    .mediaIdade(mediaIdade)
+                    .build());
+
+        }
+        return listMediaIdade;
+    }
 
 
 }

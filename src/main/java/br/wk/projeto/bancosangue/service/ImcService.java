@@ -1,6 +1,7 @@
 package br.wk.projeto.bancosangue.service;
 
 import br.wk.projeto.bancosangue.dto.ImcFaixaPorIdadeDTO;
+import br.wk.projeto.bancosangue.dto.ObesosPorSexoDTO;
 import br.wk.projeto.bancosangue.model.Doador;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,40 @@ public class ImcService {
         int faixaSuperior = faixaInferior + 9;
         return faixaInferior + " a " + faixaSuperior;
     }
+
+    public ObesosPorSexoDTO calcularPercentualObesosPorSexo() {
+        final var doadores = doadorService.todos();
+        int totalHomens = 0;
+        int totalMulheres = 0;
+        int obesosHomens = 0;
+        int obesosMulheres = 0;
+
+        for (Doador doador : doadores) {
+            final var imc = calcularImc(doador.getPeso(), doador.getAltura());
+            if (doador.getSexo().equalsIgnoreCase("Masculino")) {
+                totalHomens++;
+                if (imc > 30) {
+                    obesosHomens++;
+                }
+            } else if (doador.getSexo().equalsIgnoreCase("Feminino")) {
+                totalMulheres++;
+                if (imc > 30) {
+                    obesosMulheres++;
+                }
+            }
+        }
+        double percentualObesosHomens = (totalHomens > 0) ? (obesosHomens * 100.0 / totalHomens) : 0.0;
+        double percentualObesosMulheres = (totalMulheres > 0) ? (obesosMulheres * 100.0 / totalMulheres) : 0.0;
+        //
+        return ObesosPorSexoDTO.
+                builder()
+                .percentualFeminino(percentualObesosMulheres)
+                .percentualMasculino(percentualObesosHomens)
+                .build();
+
+
+    }
+
+
 
 }

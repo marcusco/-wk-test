@@ -50,5 +50,5 @@ public class DoadorDTO {
     @JsonProperty("altura")
     private Double altura;
     @JsonProperty("peso")
-    private Double peso;
+    private int peso;
 }

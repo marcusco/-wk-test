@@ -50,7 +50,7 @@ public class Doador {
     @Column(name = "idtiposanguineo", nullable = true, length = 255)
     private Long idTipoSanguineo;
     @Column(name = "peso")
-    private Double peso;
+    private int peso;
     @Column(name = "altura")
     private Double altura;
 

@@ -18,7 +18,7 @@ public class ImcService {
 
     private final DoadorService doadorService;
 
-    public Double calcularImc(Double peso, Double altura) {
+    public Double calcularImc(int peso, Double altura) {
         return peso / (altura * altura);
     }
 

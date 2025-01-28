@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/doador")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class DoadorController {
 
     private  final DoadorService doadorService;

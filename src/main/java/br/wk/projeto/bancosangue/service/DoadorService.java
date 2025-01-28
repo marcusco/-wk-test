@@ -1,9 +1,6 @@
 package br.wk.projeto.bancosangue.service;
 
-import br.wk.projeto.bancosangue.dto.DoadorDTO;
-import br.wk.projeto.bancosangue.dto.DoadoresPorEstadoDTO;
-import br.wk.projeto.bancosangue.dto.MediaIdadeTipoSanguineoDTO;
-import br.wk.projeto.bancosangue.dto.TipoSanguineoDTO;
+import br.wk.projeto.bancosangue.dto.*;
 import br.wk.projeto.bancosangue.exception.BaseServiceException;
 import br.wk.projeto.bancosangue.model.Doador;
 import br.wk.projeto.bancosangue.repository.DoadorRepository;
@@ -41,7 +38,7 @@ public class DoadorService {
         validate(doadorDTO);
         final var doador = dtoToDoador(doadorDTO);
         final var doadprTmp = doadorRepository.findByCpf(doador.getCpf());
-        if(!Objects.isNull(doadprTmp)){
+        if (!Objects.isNull(doadprTmp)) {
             doador.setId(doadprTmp.getId());
         }
         final var tmp = doadorRepository.save(doador);
@@ -166,6 +163,19 @@ public class DoadorService {
 
         }
         return listMediaIdade;
+    }
+
+    public List<QuantidadeDoadoresPorTipoSanguineoDTO> quantidadeDoadoresPorTipoSanguineo() {
+        final var list = doadorRepository.quantidadePossiveisDoadores();
+        final var doadores = new ArrayList<QuantidadeDoadoresPorTipoSanguineoDTO>();
+        list.stream().forEach(obj ->
+                doadores.add(QuantidadeDoadoresPorTipoSanguineoDTO
+                        .builder()
+                        .tipoSanguineo((String) obj[0])
+                        .receber((String) obj[1])
+                        .quantidade(((Long) obj[2]).intValue())
+                        .build()));
+        return doadores;
     }
 
 

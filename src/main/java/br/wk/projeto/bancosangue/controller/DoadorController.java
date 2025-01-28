@@ -4,6 +4,7 @@ import br.wk.projeto.bancosangue.dto.DoadorDTO;
 
 import br.wk.projeto.bancosangue.dto.DoadoresPorEstadoDTO;
 import br.wk.projeto.bancosangue.dto.MediaIdadeTipoSanguineoDTO;
+import br.wk.projeto.bancosangue.dto.QuantidadeDoadoresPorTipoSanguineoDTO;
 import br.wk.projeto.bancosangue.service.DoadorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +39,13 @@ public class DoadorController {
         return doadorService.doadoresPorEstado();
     }
 
-
     @GetMapping("/media-idade-por-tipo-sanguineo")
     public List<MediaIdadeTipoSanguineoDTO> calcularMediaIdadePorGrupoSanguineo() {
         return doadorService.calcularMediaIdadePorGrupoSanguineo();
+    }
+
+    @GetMapping("/quantidade-doadores-por-tipo-sanguineo")
+    public List<QuantidadeDoadoresPorTipoSanguineoDTO> quantidadeDoadoresPorTipoSanguineo() {
+        return doadorService.quantidadeDoadoresPorTipoSanguineo();
     }
 }

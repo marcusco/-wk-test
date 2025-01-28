@@ -47,7 +47,7 @@ public class Doador {
     private String telefoneFixo;
     @Column(name = "celular", nullable = true, length = 255)
     private String celular;
-    @Column(name = "tiposanguineo", nullable = true, length = 255)
+    @Column(name = "idtiposanguineo", nullable = true, length = 255)
     private Long idTipoSanguineo;
     @Column(name = "peso")
     private Double peso;

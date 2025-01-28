@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Getter
@@ -21,9 +20,11 @@ public class Doador {
     private String nome;
     @Column(name = "cpf", nullable = false, length = 255)
     private String cpf;
+    @Column(name = "rg", nullable = false, length = 255)
+    private String rg;
     @Column(name = "datanascimento", nullable = false)
     @Temporal(jakarta.persistence.TemporalType.DATE)
-    private LocalDate datanascimento;
+    private LocalDate dataNascimento;
     @Column(name = "sexo", nullable = false)
     private String sexo;
     @Column(name = "mae", nullable = false, length = 255)
@@ -47,6 +48,11 @@ public class Doador {
     @Column(name = "celular", nullable = true, length = 255)
     private String celular;
     @Column(name = "tiposanguineo", nullable = true, length = 255)
-    private Long tipoSanguineo;
+    private Long idTipoSanguineo;
+    @Column(name = "peso")
+    private Double peso;
+    @Column(name = "altura")
+    private Double altura;
+
 }
 

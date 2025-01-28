@@ -4,6 +4,7 @@ import br.wk.projeto.bancosangue.dto.TipoSanguineoDTO;
 import br.wk.projeto.bancosangue.service.TipoSanguineoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,4 +19,6 @@ public class TipoSanguineoController {
 
     @GetMapping
     public List<TipoSanguineoDTO> findAll() { return tipoSanguineoService.findAll(); }
+
+
 }

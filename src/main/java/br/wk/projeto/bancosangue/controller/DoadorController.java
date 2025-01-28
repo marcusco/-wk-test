@@ -2,13 +2,10 @@ package br.wk.projeto.bancosangue.controller;
 
 import br.wk.projeto.bancosangue.dto.DoadorDTO;
 
+import br.wk.projeto.bancosangue.dto.DoadoresPorEstadoDTO;
 import br.wk.projeto.bancosangue.service.DoadorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,11 +16,24 @@ public class DoadorController {
 
     private  final DoadorService doadorService;
 
-
     @GetMapping
-    List<DoadorDTO> findAll() { return doadorService.findAll(); }
+    public List<DoadorDTO> findAll() {
+        return doadorService.findAll();
+    }
 
 
     @PostMapping
-    DoadorDTO salvar(DoadorDTO doadorDTO) { return doadorService.salvar(doadorDTO); }
+    public DoadorDTO salvar(@RequestBody  DoadorDTO doadorDTO) {
+        return doadorService.salvar(doadorDTO);
+    }
+
+    @PostMapping("/todos")
+    public List<DoadorDTO> salvarTodos(@RequestBody  List<DoadorDTO> doadores) {
+        return doadorService.salvarTodos(doadores);
+    }
+
+    @GetMapping("/doadores-por-estado")
+    public List<DoadoresPorEstadoDTO> doadoresPorEstado() {
+        return doadorService.doadoresPorEstado();
+    }
 }

@@ -90,6 +90,7 @@ public class DoadorService {
                 .celular(doador.getCelular())
                 .altura(doador.getAltura())
                 .peso(doador.getPeso())
+                .tipoSanguineo(tipoSanguineoService.findById(doador.getIdTipoSanguineo()).getCodigo())
                 .build();
     }
 

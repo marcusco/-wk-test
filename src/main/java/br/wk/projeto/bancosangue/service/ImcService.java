@@ -6,6 +6,8 @@ import br.wk.projeto.bancosangue.model.Doador;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,10 +92,14 @@ public class ImcService {
         double percentualObesosHomens = (totalHomens > 0) ? (obesosHomens * 100.0 / totalHomens) : 0.0;
         double percentualObesosMulheres = (totalMulheres > 0) ? (obesosMulheres * 100.0 / totalMulheres) : 0.0;
         //
+        BigDecimal bdM = BigDecimal.valueOf(percentualObesosHomens);
+        bdM = bdM.setScale(2, RoundingMode.DOWN);
+        BigDecimal bdF = BigDecimal.valueOf(percentualObesosMulheres);
+        bdF = bdF.setScale(2, RoundingMode.DOWN);
         return ObesosPorSexoDTO.
                 builder()
-                .percentualFeminino(percentualObesosMulheres)
-                .percentualMasculino(percentualObesosHomens)
+                .percentualFeminino(bdM.doubleValue())
+                .percentualMasculino(bdF.doubleValue())
                 .build();
 
 

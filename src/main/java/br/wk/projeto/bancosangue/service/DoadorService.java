@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -153,13 +155,16 @@ public class DoadorService {
 
         // Calcula e exibe a média de idade para cada tipo sanguíneo
         for (String tipo : somaIdades.keySet()) {
+
             totalIdade = somaIdades.get(tipo);
             totalDoares = contador.get(tipo);
             mediaIdade = totalDoares > 0 ? (double) totalIdade / totalDoares : 0.0;
+            BigDecimal bd = BigDecimal.valueOf(mediaIdade);
+            bd = bd.setScale(2, RoundingMode.DOWN);
             listMediaIdade.add(MediaIdadeTipoSanguineoDTO
                     .builder()
                     .tipoSanguineo(tipo)
-                    .mediaIdade(mediaIdade)
+                    .mediaIdade(bd.doubleValue())
                     .build());
 
         }

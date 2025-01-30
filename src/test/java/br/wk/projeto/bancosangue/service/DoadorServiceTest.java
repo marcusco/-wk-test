@@ -1,8 +1,10 @@
 package br.wk.projeto.bancosangue.service;
 
 import br.wk.projeto.bancosangue.dto.DoadorDTO;
+import br.wk.projeto.bancosangue.dto.TipoSanguineoDTO;
 import br.wk.projeto.bancosangue.exception.BaseServiceException;
 import br.wk.projeto.bancosangue.model.Doador;
+import br.wk.projeto.bancosangue.model.TipoSanguineo;
 import br.wk.projeto.bancosangue.repository.DoadorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,13 +27,20 @@ public class DoadorServiceTest {
     private DoadorService doadorService;
     @Mock
     private DoadorRepository doadorRepository;
+    @Mock
+    private TipoSanguineoService tipoSanguineoService;
 
     @Test
     void testSalvarDoador_Sucesso() {
         //given
         final var dto = buildDoadorDTO();
         final var doador = buildDoador();
-        when(doadorRepository.save(any())).thenReturn(doador);
+        final var tipoSanguineoDTO = buildTipoSanguineoDTO();
+        final var tipoSanguineo = buildTipoSanguineo();
+        when(tipoSanguineoService.findById(any())).thenReturn(tipoSanguineo);
+        when(tipoSanguineoService.findByCodigo(any())).thenReturn(tipoSanguineoDTO);
+        when(doadorRepository.findByCpf(dto.getCpf())).thenReturn(doador);
+        when(doadorRepository.save(any(Doador.class))).thenReturn(doador);
         //when
         final var response = doadorService.salvar(dto);
         //then
@@ -58,6 +67,7 @@ public class DoadorServiceTest {
                 .mae("Teste")
                 .sexo("F")
                 .dataNascimento(LocalDate.now())
+                .tipoSanguineo("A+")
                 .build();
     }
 
@@ -70,7 +80,22 @@ public class DoadorServiceTest {
         doador.setCpf("123456789");
         doador.setSexo("F");
         doador.setDataNascimento(LocalDate.now());
+        doador.setIdTipoSanguineo(1L);
         return doador;
 
+    }
+
+    private TipoSanguineo buildTipoSanguineo(){
+        final var tipoSanguineo = new TipoSanguineo();
+        tipoSanguineo.setId(1L);
+        tipoSanguineo.setCodigo("A+");
+        return tipoSanguineo;
+    }
+
+    private TipoSanguineoDTO buildTipoSanguineoDTO(){
+        return TipoSanguineoDTO.builder()
+                .id(1L)
+                .codigo("A+")
+                .build();
     }
 }

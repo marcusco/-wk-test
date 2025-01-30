@@ -57,7 +57,7 @@ public class DoadorServiceTest {
                 .cpf("123456789")
                 .mae("Teste")
                 .sexo("F")
-                .datanascimento(LocalDate.now())
+                .dataNascimento(LocalDate.now())
                 .build();
     }
 
@@ -69,7 +69,7 @@ public class DoadorServiceTest {
         doador.setMae("Teste");
         doador.setCpf("123456789");
         doador.setSexo("F");
-        doador.setDatanascimento(LocalDate.now());
+        doador.setDataNascimento(LocalDate.now());
         return doador;
 
     }
